@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Application/">
+    <Project Path="src/Application/TasksApp.Application.csproj" />
+  </Folder>
+  <Folder Name="/src/Domain/">
+    <Project Path="src/Domain/TasksApp.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src/Infrastructure/TasksApp.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/" />
+  <Folder Name="/src/Presentation/WebAPI/">
+    <Project Path="src/Presentation/TasksApp.WebAPI/TasksApp.WebAPI.csproj" Id="8037f0ad-3416-4319-b026-8c256aa8fc71" />
+  </Folder>
+  <Folder Name="/src/Presentation/WebAppBlazor/">
+    <Project Path="src/Presentation/TasksApp.BlazorWASM/TasksApp.BlazorWASM.csproj" Id="61049030-0ce3-4e56-b716-235a686b778f" />
+  </Folder>
+  <Folder Name="/src/Presentation/WebAppReact/">
+    <Project Path="src/Presentation/TasksApp.ReactTS/tasksapp.reactts.esproj">
+      <Build />
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/tests/" />
+</Solution>
