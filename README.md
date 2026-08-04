@@ -16,5 +16,7 @@ TODO: Add a detailed project structure diagram and explanation.
 
 ## What was left out:
 
-- No authentication or authorization mechanisms (e.g., JWT, OAuth2). For this basic task management app, all endpoints are open.
+- No authentication or authorization mechanisms (e.g., JWT, OAuth2). For this basic task management app, all endpoints are open. Should be implemented in a production-ready application to assign tasks to users.
 - No use of mapping libraries like AutoMapper; manual mapping is used for simplicity.
+- No use of structured logging frameworks; basic console logging is implemented. Should be replaced with a more robust logging solution in production like serilog or NLog.
+- 

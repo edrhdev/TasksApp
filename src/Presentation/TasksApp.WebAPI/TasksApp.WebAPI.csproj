@@ -10,4 +10,9 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\TasksApp.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\TasksApp.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
