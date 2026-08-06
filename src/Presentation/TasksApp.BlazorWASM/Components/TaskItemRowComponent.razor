@@ -1,0 +1,57 @@
+﻿@inject ITaskApiClient TaskService
+@inject DialogService DialogService
+@inject NotificationService NotificationService
+
+<RadzenCard Variant="Variant.Outlined" class="rz-p-3">
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+        <RadzenCheckBox TValue="bool"
+                        Value="@TaskItem.IsCompleted"
+                        Disabled="@TaskItem.IsUpdating"
+                        ValueChanged="@((bool newValue) => ToggleTaskStatusAsync(newValue))" />
+
+        <RadzenStack Style="width: 100%;" Gap="1">
+            @if (TaskItem.IsCompleted)
+            {
+                <RadzenText TextStyle="TextStyle.Body2" Style="cursor: pointer;" @onclick="() => ToggleTaskStatusAsync(false)">
+                    <s><b>@TaskItem.Title</b></s>
+                </RadzenText>
+            }
+            else
+            {
+                <RadzenText TextStyle="TextStyle.Body2" Style="cursor: pointer;" @onclick="() => ToggleTaskStatusAsync(true)">
+                    <b>@TaskItem.Title</b>
+                </RadzenText>
+            }
+
+            <RadzenStack>
+                <RadzenText TextStyle="TextStyle.Caption" class="rz-color-tertiary">
+                    Created: @TaskItem.CreatedAt.ToLocalTime().ToString("dd/MM/yy HH:mm")
+                </RadzenText>
+
+                @if (TaskItem.IsCompleted && TaskItem.CompletedAt.HasValue)
+                {
+                    <RadzenText TextStyle="TextStyle.Caption" class="rz-color-primary">
+                        Completed: @TaskItem.CompletedAt.Value.ToLocalTime().ToString("dd/MM/yy HH:mm")
+                    </RadzenText>
+                }
+            </RadzenStack>
+        </RadzenStack>
+
+        @if (TaskItem.IsUpdating)
+        {
+            <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Primary"
+                                       Value="100"
+                                       ShowValue="false"
+                                       Mode="ProgressBarMode.Indeterminate"
+                                       Size="ProgressBarCircularSize.ExtraSmall" />
+        }
+        else
+        {
+            <RadzenButton Icon="delete"
+                          ButtonStyle="ButtonStyle.Danger"
+                          Variant="Variant.Flat"
+                          Size="ButtonSize.Small"
+                          Click="DeleteTaskAsync" />
+        }
+    </RadzenStack>
+</RadzenCard>

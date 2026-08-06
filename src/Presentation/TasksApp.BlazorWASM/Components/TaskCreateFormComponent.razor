@@ -1,0 +1,14 @@
+﻿@inject ITaskApiClient TaskService
+@inject NotificationService NotificationService
+
+<RadzenTemplateForm Style="width: 100%;" TItem="CreateTaskModel" Data="@_newTask" Submit="@CreateTaskAsync">
+    <RadzenFormField Style="width: 100%;" Text="What needs to be done?" Variant="Variant.Outlined">
+        <ChildContent>
+            <RadzenTextBox @bind-Value="@_newTask.Title" Disabled="@IsBusy" Name="TaskTitle" />
+            <RadzenRequiredValidator Component="TaskTitle" Text="Title is required." />
+        </ChildContent>
+        <End>
+            <RadzenButton ButtonType="ButtonType.Submit" Icon="add_task" Text="Add" Size="ButtonSize.Small" Disabled="@IsBusy" />
+        </End>
+    </RadzenFormField>
+</RadzenTemplateForm>

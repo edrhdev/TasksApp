@@ -1,22 +1,57 @@
-# TasksApp — Full-Stack Task Management Application
+# Task Management App
+A full-stack Task Management app built with **.NET 10** (Clean Architecture), **Blazor WASM**, and **React (TS)**.
 
-A full-stack Task Management application built with **.NET Core**, **React** and **Blazor WebAssembly**, following **Clean Architecture** principles, strict separation of concerns, and production-ready design patterns.
+### Key Assumptions & Features Added
+- **Clean Architecture & Modularity**: Decoupled backend layers (`Domain`, `Application`, `Infrastructure`, `WebAPI`) and modular frontend UI components.
+- **RFC 7807 Exception Handling**: Custom middleware maps `UserException` and regular `Exceptions` to standardized `ProblemDetails`.
+- **Result Pattern**: Handled API failures gracefully using a non-throwing `ApiResult` / `ApiResult<T>` wrapper on the frontend.
+- **Optimistic UI**: Checkbox toggle updates state immediately with auto-rollback on server error.
 
-## Features
+## Project Structure
+The solution is organized into the following projects:
+- **TasksApp.WebAPI:** The .NET RESTful API backend.
+- **TasksApp.ReactTS:** React front-end (as requested).
+- **TasksApp.BlazorWASM:** Blazor WebAssembly alternative front-end with Radzen components.
 
-- **Clean Architecture Layout:** Domain-Driven Design (DDD) principles separating Core Logic, Application Use Cases, Infrastructure (EF Core + SQLite), and Presentation.
-- **RESTful API Backend:** Clean API endpoints supporting full Task lifecycle management (Create, Read, Toggle status) with standardized error responses (`ProblemDetails`).
-- **Interactive Blazor and React UI:** Component-based, responsive front-end delivering smooth state updates and data binding.
-- **Data Persistence:** EF Core backed by SQLite with seed data for rapid demonstration.
-- **Containerization:** Fully Dockerized with `docker-compose` for instant zero-dependency execution.
+## Quick Start
 
-## Project Structure and Setup
+### 1. Backend (.NET WebAPI)
+```bash
+cd TasksApp.WebAPI
+dotnet run
+```
+*Database (SQLite) is created automatically on startup.*
 
-TODO: Add a detailed project structure diagram and explanation.
+### 2. Frontend (Choose one)
+
+Option A: Blazor WASM
+```bash
+cd TasksApp.BlazorWASM
+dotnet run
+```
+
+Option B: React (TypeScript)
+```bash
+cd tasksapp.reactts
+pnpm install
+pnpm run dev
+```
+
+## What Was Left Out (Scope Limits)
+-   **Authentication/Authorization:** Open endpoints; no JWT or multi-tenancy.
+-   **Pagination & Filtering:** Simple list fetch for scope simplicity.
+-   **Structured Telemetry:** Uses native standard loggers instead of external aggregators (e.g., Serilog).
+
 
 ## What was left out:
 
-- No authentication or authorization mechanisms (e.g., JWT, OAuth2). For this basic task management app, all endpoints are open. Should be implemented in a production-ready application to assign tasks to users.
-- No use of mapping libraries like AutoMapper; manual mapping is used for simplicity.
-- No use of structured logging frameworks; basic console logging is implemented. Should be replaced with a more robust logging solution in production like serilog or NLog.
-- 
+For this basic task management app, the following features were not implemented but should be considered for a production-ready application:
+
+- **Authentication or authorization**: all endpoints are open and same database is shared for all users, should be implemented to manage access control and separation of tasks per users.
+- **Structured Telemetry**: basic console logging is implemented. Should be replaced with a robust logging solution in production like Serilog or NLog to log to a centralized observability platform.
+- **Pagination, sorting or filtering**: should be implemented to handle large datasets efficiently.
+- **Caching and limiting mechanisms**: caching and limiting strategies should be implemented to improve performance and reduce load on the database.
+- **Custom exceptions**: Currently the app uses a single `UserException` for controlled errors the user can see, and all other exceptions are logged and returned as generic errors to avoid showing sensitive information. Detailed Exceptions are required as the project grows.
+- **Swagger not included**: Should be added to provide API documentation and testing capabilities.
+-   **Unit & Integration Testing:** Code structured for DI and testability, but test projects omitted for time.
+-   **Docker & CI/CD Pipelines:** Manual execution assumed for evaluation.

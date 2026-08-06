@@ -31,4 +31,10 @@ public class TaskRepository(AppDbContext context) : ITaskRepository
         context.Tasks.Update(task);
         await context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task DeleteAsync(TaskItem task, CancellationToken cancellationToken = default)
+    {
+        context.Tasks.Remove(task);
+        await context.SaveChangesAsync(cancellationToken);
+    }
 }

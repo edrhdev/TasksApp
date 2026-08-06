@@ -1,7 +1,38 @@
 ﻿@page "/"
+@inject ITaskApiClient TaskService
+@inject DialogService DialogService
+@inject NotificationService NotificationService
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Manage Tasks</PageTitle>
 
-<h1>Hello, world!</h1>
+<RadzenCard Variant="Variant.Filled" class="rz-mx-auto" Style="max-width: 520px">
+    <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="1rem" class="rz-p-4">
+        <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H4" Class="rz-m-0 rz-text-primary"><b>My Tasks</b></RadzenText>
+        <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.Body1" Class="rz-m-0 rz-text-muted">Add, toggle and remove tasks.</RadzenText>
 
-Welcome to your new app.
+        <TaskCreateFormComponent IsBusy="@_isLoading" OnTaskCreated="OnTaskCreated" />
+
+        @if (_isLoading)
+        {
+            <LoadingComponent />
+        }
+        else if (!_tasks.Any())
+        {
+            <RadzenAlert AlertStyle="AlertStyle.Info" AllowClose="false">
+                There are no tasks registered. Create a new one above!
+            </RadzenAlert>
+        }
+        else
+        {
+            <RadzenText TextAlign="TextAlign.Center">
+                Total: <strong>@_tasks.Count</strong> | Pending: <strong>@_tasks.Count(t => !t.IsCompleted)</strong> | Completed: <strong>@_tasks.Count(t => t.IsCompleted)</strong>
+                <RadzenButton Icon="refresh" ButtonStyle="ButtonStyle.Light" Size="ButtonSize.Small" Click="LoadTasksAsync" IsBusy="@_isLoading" Disabled="@_isLoading" />
+            </RadzenText>
+
+            @foreach (var task in _tasks)
+            {
+                <TaskItemRowComponent @key="task.Id" TaskItem="task" OnDeleteTask="OnTaskDeleted" OnTaskToggled="OnTaskToggled" />
+            }
+        }
+    </RadzenStack>
+</RadzenCard>

@@ -7,4 +7,5 @@ public interface ITaskService
     Task<IReadOnlyList<TaskDto>> GetAllTasksAsync(CancellationToken cancellationToken = default);
     Task<TaskDto> CreateTaskAsync(CreateTaskDto createTaskDto, CancellationToken cancellationToken = default);
     Task<TaskDto?> ToggleTaskStatusAsync(Guid id, CancellationToken cancellationToken = default);
+    Task DeleteTaskAsync(Guid id, CancellationToken cancellationToken = default);
 }
