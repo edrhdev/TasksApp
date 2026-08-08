@@ -49,5 +49,10 @@ public class TaskService(ITaskRepository repository) : ITaskService
 
     // TODO: Replace manual mapping with AutoMapper or similar library for better maintainability and scalability.
     private static TaskDto MapToDto(TaskItem task) =>
-        new(task.Id, task.Title, task.IsCompleted, task.CreatedAt, task.CompletedAt);
+        new(task.Id,
+            task.Title,
+            task.IsCompleted,
+            DateTime.SpecifyKind(task.CreatedAt, DateTimeKind.Utc),
+            task.CompletedAt != null ?
+            DateTime.SpecifyKind(task.CompletedAt.Value, DateTimeKind.Utc) : null);
 }

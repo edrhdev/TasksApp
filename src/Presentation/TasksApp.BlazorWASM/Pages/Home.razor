@@ -3,18 +3,27 @@
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 
-<PageTitle>Manage Tasks</PageTitle>
+<PageTitle>Tasks Management App</PageTitle>
 
 <RadzenCard Variant="Variant.Filled" class="rz-mx-auto" Style="max-width: 520px">
     <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="1rem" class="rz-p-4">
-        <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H4" Class="rz-m-0 rz-text-primary"><b>My Tasks</b></RadzenText>
-        <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.Body1" Class="rz-m-0 rz-text-muted">Add, toggle and remove tasks.</RadzenText>
+        <RadzenIcon Icon="list_alt_check" IconColor="@Colors.Info" Style="font-size: 48px;" class="rz-mx-auto" />
+        <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H4" class="rz-m-0 rz-text-primary"><b>Tasks Dashboard</b></RadzenText>
+        <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.Body1" class="rz-m-0 rz-text-muted">
+            Enterprise Task Management built with Blazor & .NET.
+        </RadzenText>
 
         <TaskCreateFormComponent IsBusy="@_isLoading" OnTaskCreated="OnTaskCreated" />
 
         @if (_isLoading)
         {
             <LoadingComponent />
+        }
+        else if (isError)
+        {
+            <RadzenAlert AlertStyle="AlertStyle.Danger" AllowClose="false">
+                @errorMessage
+            </RadzenAlert>
         }
         else if (!_tasks.Any())
         {
@@ -24,10 +33,21 @@
         }
         else
         {
-            <RadzenText TextAlign="TextAlign.Center">
-                Total: <strong>@_tasks.Count</strong> | Pending: <strong>@_tasks.Count(t => !t.IsCompleted)</strong> | Completed: <strong>@_tasks.Count(t => t.IsCompleted)</strong>
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+                <RadzenText TextStyle="TextStyle.Caption">
+                    Total: <strong>@_tasks.Count</strong>
+                </RadzenText>
+                <span>•</span>
+                <RadzenText TextStyle="TextStyle.Caption">
+                    Pending: <strong>@_tasks.Count(t => !t.IsCompleted)</strong>
+                </RadzenText>
+                <span>•</span>
+                <RadzenText TextStyle="TextStyle.Caption">
+                    Completed: <strong>@_tasks.Count(t => t.IsCompleted)</strong>
+                </RadzenText>
+                <span>•</span>
                 <RadzenButton Icon="refresh" ButtonStyle="ButtonStyle.Light" Size="ButtonSize.Small" Click="LoadTasksAsync" IsBusy="@_isLoading" Disabled="@_isLoading" />
-            </RadzenText>
+            </RadzenStack>
 
             @foreach (var task in _tasks)
             {

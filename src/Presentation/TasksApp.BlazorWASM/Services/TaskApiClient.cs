@@ -21,6 +21,16 @@ public class TaskApiClient(HttpClient _http, ILogger<TaskApiClient> _logger) : I
 
             return ApiResult<List<TaskModel>>.Failure(problem);
         }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "HTTP request error fetching tasks.");
+
+            return ApiResult<List<TaskModel>>.Failure(new CustomProblemDetails
+            {
+                Title = "HTTP Request Error",
+                Detail = "An error occurred while sending the HTTP request, check your internet connection.",
+            });
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected client error fetching tasks.");
@@ -52,6 +62,16 @@ public class TaskApiClient(HttpClient _http, ILogger<TaskApiClient> _logger) : I
 
             return ApiResult<TaskModel>.Failure(problem);
         }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "HTTP request error creating task.");
+
+            return ApiResult<TaskModel>.Failure(new CustomProblemDetails
+            {
+                Title = "HTTP Request Error",
+                Detail = "An error occurred while sending the HTTP request, check your internet connection.",
+            });
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected client error creating task.");
@@ -82,6 +102,16 @@ public class TaskApiClient(HttpClient _http, ILogger<TaskApiClient> _logger) : I
 
             return ApiResult<TaskModel>.Failure(problem);
         }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "HTTP request error toggling task status for ID: {TaskId}", id);
+
+            return ApiResult<TaskModel>.Failure(new CustomProblemDetails
+            {
+                Title = "HTTP Request Error",
+                Detail = "An error occurred while sending the HTTP request, check your internet connection.",
+            });
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected client error toggling task status for ID: {TaskId}", id);
@@ -106,6 +136,16 @@ public class TaskApiClient(HttpClient _http, ILogger<TaskApiClient> _logger) : I
             var problem = await ExtractProblemDetailsAsync(response, cancellationToken);
 
             return ApiResult.Failure(problem);
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "HTTP request error deleting task for ID: {TaskId}", id);
+
+            return ApiResult.Failure(new CustomProblemDetails
+            {
+                Title = "HTTP Request Error",
+                Detail = "An error occurred while sending the HTTP request, check your internet connection.",
+            });
         }
         catch (Exception ex)
         {

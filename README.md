@@ -1,23 +1,36 @@
 # Task Management App
 A full-stack Task Management app built with **.NET 10** (Clean Architecture), **Blazor WASM**, and **React (TS)**.
 
-### Key Assumptions & Features Added
+## Key Assumptions & Features Added
 - **Clean Architecture & Modularity**: Decoupled backend layers (`Domain`, `Application`, `Infrastructure`, `WebAPI`) and modular frontend UI components.
-- **RFC 7807 Exception Handling**: Custom middleware maps `UserException` and regular `Exceptions` to standardized `ProblemDetails`.
-- **Result Pattern**: Handled API failures gracefully using a non-throwing `ApiResult` / `ApiResult<T>` wrapper on the frontend.
-- **Optimistic UI**: Checkbox toggle updates state immediately with auto-rollback on server error.
+- **RFC 7807 Exception Handling**: Custom middleware maps `UserException` and generic `Exception` to standardized `ProblemDetails`.
+- **Result Pattern**: Handled API failures gracefully using an `ApiResult` / `ApiResult<T>` wrapper on the frontend.
+- **Optimistic UI & Concurrency Protection**: Checkbox toggle updates state immediately with automatic rollback on server error, using TanStack Query mutation guards to prevent race conditions.
+- **Delete Confirmation**: Deletion is protected by accessible modal confirmation dialogs (`AlertDialog`).
 
 ## Project Structure
 The solution is organized into the following projects:
 - **TasksApp.WebAPI:** The .NET RESTful API backend.
-- **TasksApp.ReactTS:** React front-end (as requested).
+- **TasksApp.ReactTS:** React front-end (using TanStack Query, Shadcn/UI, and Sonner).
 - **TasksApp.BlazorWASM:** Blazor WebAssembly alternative front-end with Radzen components.
+## Requirements
+- [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+- [pnpm](https://pnpm.io/installation)
+
+## Setup configuration
+- Listening port of the backend app is configured in `appsettings.Development.json`. Default: `http://localhost:5000`.
+- Database connection string is in `appsettings.Development.json`. Default: `Data Source=TasksApp.db` (SQLite).
+- React frontend uses `.env` (`VITE_API_BASE_URL=http://localhost:5000`).
+- Blazor WASM frontend uses `wwwroot/appsettings.Development.json`.
 
 ## Quick Start
 
+Clone the repository and run the following commands to start the backend and frontend.
+
 ### 1. Backend (.NET WebAPI)
 ```bash
-cd TasksApp.WebAPI
+cd src/Presentation/TasksApp.WebAPI
+dotnet restore
 dotnet run
 ```
 *Database (SQLite) is created automatically on startup.*
@@ -26,32 +39,26 @@ dotnet run
 
 Option A: Blazor WASM
 ```bash
-cd TasksApp.BlazorWASM
+cd src/Presentation/TasksApp.BlazorWASM
+dotnet restore
 dotnet run
 ```
 
 Option B: React (TypeScript)
 ```bash
-cd tasksapp.reactts
+cd src/Presentation/TasksApp.ReactTS
 pnpm install
 pnpm run dev
 ```
 
-## What Was Left Out (Scope Limits)
--   **Authentication/Authorization:** Open endpoints; no JWT or multi-tenancy.
--   **Pagination & Filtering:** Simple list fetch for scope simplicity.
--   **Structured Telemetry:** Uses native standard loggers instead of external aggregators (e.g., Serilog).
+## What Was Left Out (Trade-offs for time)
 
+For this technical assessment, the following features were intentionally omitted but are recommended for a production-ready application:
 
-## What was left out:
-
-For this basic task management app, the following features were not implemented but should be considered for a production-ready application:
-
-- **Authentication or authorization**: all endpoints are open and same database is shared for all users, should be implemented to manage access control and separation of tasks per users.
-- **Structured Telemetry**: basic console logging is implemented. Should be replaced with a robust logging solution in production like Serilog or NLog to log to a centralized observability platform.
-- **Pagination, sorting or filtering**: should be implemented to handle large datasets efficiently.
-- **Caching and limiting mechanisms**: caching and limiting strategies should be implemented to improve performance and reduce load on the database.
-- **Custom exceptions**: Currently the app uses a single `UserException` for controlled errors the user can see, and all other exceptions are logged and returned as generic errors to avoid showing sensitive information. Detailed Exceptions are required as the project grows.
-- **Swagger not included**: Should be added to provide API documentation and testing capabilities.
--   **Unit & Integration Testing:** Code structured for DI and testability, but test projects omitted for time.
--   **Docker & CI/CD Pipelines:** Manual execution assumed for evaluation.
+- **Authentication & Authorization**: All endpoints are open. Multi-tenancy or user isolation should be added via JWT / ASP.NET Core Identity.
+- **Structured Telemetry**: Basic console logging is used. Production should integrate Serilog / OpenTelemetry to an APM platform.
+- **Caching, Pagination, Sorting, & Filtering**: Left out to keep API contracts minimal for this scope.
+- **Database Migrations**: EnsureCreated() is used for auto-creation on launch. Proper EF Core migrations should be used in production.
+- **Swagger / OpenAPI Specs**: Excluded to minimize boilerplate, but recommended for API documentation.
+- **Unit & Integration Tests**: Code is structured around DI and testability, but test projects were omitted to fit the assessment timeframe.
+- **Docker & CI/CD Pipelines**: Assumed manual execution for local evaluation.

@@ -2,7 +2,7 @@
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 
-<RadzenCard Variant="Variant.Outlined" class="rz-p-3">
+<RadzenCard Variant="Variant.Outlined" class="rz-p-3" Style=@((TaskItem.IsCompleted ? "opacity: 0.5;" : ""))>
     <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
         <RadzenCheckBox TValue="bool"
                         Value="@TaskItem.IsCompleted"
@@ -23,15 +23,15 @@
                 </RadzenText>
             }
 
-            <RadzenStack>
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start" Gap="10px">
                 <RadzenText TextStyle="TextStyle.Caption" class="rz-color-tertiary">
-                    Created: @TaskItem.CreatedAt.ToLocalTime().ToString("dd/MM/yy HH:mm")
+                    Created: @TaskItem.CreatedAt.ToLocalTime().ToString("MMM dd, hh:mm tt")
                 </RadzenText>
 
                 @if (TaskItem.IsCompleted && TaskItem.CompletedAt.HasValue)
                 {
-                    <RadzenText TextStyle="TextStyle.Caption" class="rz-color-primary">
-                        Completed: @TaskItem.CompletedAt.Value.ToLocalTime().ToString("dd/MM/yy HH:mm")
+                    <RadzenText TextStyle="TextStyle.Caption" class="rz-color-success">
+                        Completed: @TaskItem.CompletedAt.Value.ToLocalTime().ToString("MMM dd, hh:mm tt")
                     </RadzenText>
                 }
             </RadzenStack>

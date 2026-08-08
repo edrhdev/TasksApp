@@ -7,6 +7,8 @@ public partial class Home
 {
     bool _isLoading = true;
     List<TaskModel> _tasks = [];
+    bool isError = false;
+    string errorMessage = string.Empty;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -27,8 +29,7 @@ public partial class Home
 
     private void OnTaskCreated(TaskModel newTask)
     {
-        _tasks.Add(newTask);
-        _tasks = [.. _tasks.OrderByDescending(t => t.CreatedAt)];
+        _tasks = [newTask, .. _tasks];
     }
 
     private async Task LoadTasksAsync()
@@ -38,9 +39,17 @@ public partial class Home
         var result = await TaskService.GetAllTasksAsync();
 
         if (result.IsSuccess && result.Data is not null)
+        {
             _tasks = result.Data;
+            isError = false;
+            errorMessage = string.Empty;
+        }
         else
+        {
+            isError = true;
+            errorMessage = result.Error?.Detail ?? "An unknown error occurred.";
             NotificationService.Notify(NotificationHelper.BuildFromApiResult(result, "Error", "Failed to load tasks."));
+        }
 
         _isLoading = false;
 

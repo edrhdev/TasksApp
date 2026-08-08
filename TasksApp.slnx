@@ -20,7 +20,7 @@
     <Project Path="src/Presentation/TasksApp.BlazorWASM/TasksApp.BlazorWASM.csproj" Id="61049030-0ce3-4e56-b716-235a686b778f" />
   </Folder>
   <Folder Name="/src/Presentation/WebAppReact/">
-    <Project Path="src/Presentation/TasksApp.ReactTS/tasksapp.reactts.esproj">
+    <Project Path="src/Presentation/TasksApp.ReactTS/TasksApp.ReactTS.esproj">
       <Build />
       <Deploy />
     </Project>
