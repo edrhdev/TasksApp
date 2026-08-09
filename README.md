@@ -47,6 +47,9 @@ dotnet run
 ```
 
 Option B: React (TypeScript)
+
+Make sure you create the `.env` file, you can rename the `.env.example` to `.env`
+
 ```bash
 cd src/Presentation/TasksApp.ReactTS
 pnpm install
