@@ -13,8 +13,10 @@ The solution is organized into the following projects:
 - **TasksApp.WebAPI:** The .NET RESTful API backend.
 - **TasksApp.ReactTS:** React front-end (using TanStack Query, Shadcn/UI, and Sonner).
 - **TasksApp.BlazorWASM:** Blazor WebAssembly alternative front-end with Radzen components.
+
 ## Requirements
 - [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+- [Node 22+](https://nodejs.org/en/download/)
 - [pnpm](https://pnpm.io/installation)
 
 ## Setup configuration
